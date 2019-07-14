@@ -18,26 +18,38 @@ void drawStrR(u8g2_uint_t x, u8g2_uint_t y, const char *str) {
 	u8g2.drawStr(x-w, y, str);
 }
 
-void updateDisplay(uint16_t onSecs, uint16_t offSecs, bool on, uint16_t remaining)
+void updateDisplay(uint32_t onSecs, uint32_t offSecs, bool on, uint32_t current, bool autoSwitch)
 {
 	u8g2.clearBuffer();
 
-	u8g2.setFont(u8g2_font_crox5h_tf);
+	u8g2_uint_t y0 = 26;
+	u8g2_uint_t y1 = 54;
+	u8g2_uint_t x0 = 70;
+	u8g2_uint_t x1 = 128;
 
-	u8g2_uint_t y0 = 28;
-	u8g2_uint_t y1 = 60;
-	u8g2_uint_t x0 = 62;
-	u8g2_uint_t x1 = 126;
-	
+	u8g2.setFont(u8g2_font_6x12_mf);
+	drawStrR(x0, y0 + 9, "on");
+	drawStrR(x0, y1 + 9, "off");
+
+	u8g2.setFont(u8g2_font_10x20_mn);
+
 	char buf[20];
-	sprintf(buf, "%d", onSecs);
+	sprintf(buf, "%ld", (long)onSecs);
 	drawStrR(x0, y0, buf);
 
-	sprintf(buf, "%d", offSecs);
+	sprintf(buf, "%ld", (long)offSecs);
 	drawStrR(x0, y1, buf);
 
-	sprintf(buf, "%d", remaining);
+	sprintf(buf, "%ld", (long)current);
 	drawStrR(x1, on ? y0 : y1, buf);
+
+	if (autoSwitch) {
+		u8g2.setFont(u8g2_font_open_iconic_embedded_2x_t);
+		u8g2.drawStr(0, 2 + (on ? y0 : y1), "A");
+	} else {
+		u8g2.setFont(u8g2_font_6x12_mf);
+		u8g2.drawStr(0, 9, "no auto switching");
+	}
 
 	u8g2.sendBuffer();
 }

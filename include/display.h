@@ -2,6 +2,6 @@
 #define DISPLAY_H_
 
 void initDisplay();
-void updateDisplay(uint16_t onSecs, uint16_t offSecs, bool on, uint16_t remaining);
+void updateDisplay(uint32_t onSecs, uint32_t offSecs, bool on, uint32_t current, bool autoSwitch);
 
 #endif /* DISPLAY_H_ */
